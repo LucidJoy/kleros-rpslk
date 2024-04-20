@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   faHandRock,
   faHandScissors,
@@ -9,104 +9,97 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { RpsContext } from "@/context/RpsContext";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "./ui/button";
+import { cn } from "@/utils/cn";
 import { toast } from "sonner";
 
-export default function Choose() {
-  const { moveNumber, setMoveNumber } = useContext(RpsContext);
+export default function Choose({ player }) {
+  const { moveNumber, setMoveNumber, setPlayer1Move, setPlayer2Move } =
+    useContext(RpsContext);
 
   const handleSelectMove = (num, move) => {
     try {
-      setMoveNumber(num);
-      toast.success(`${move} selected.`);
+      if (player == "player2") {
+        localStorage.setItem("player2Move", num);
+        setMoveNumber(num);
+        setPlayer2Move(num);
+      } else if (player === "player1") {
+        setMoveNumber(num);
+        setPlayer1Move(num);
+      }
+      toast.success(
+        `${player === "player1" ? "Player 1" : "Player 2"}: ${move} selected.`
+      );
     } catch (error) {
       toast.error("Something went wrong.");
     }
   };
 
   return (
-    <Card className='bg-[#262626] text-white'>
-      <CardHeader>
-        <CardTitle>Choose your move</CardTitle>
-      </CardHeader>
-
-      <CardContent className='grid gap-8'>
-        <div className='flex items-center gap-4'>
-          <FontAwesomeIcon icon={faHandRock} size='2xl' color='' />
-          <div>
-            <p className='text-sm font-medium leading-none ml-[2px]'>Rock</p>
-          </div>
-          <div className='ml-auto font-medium'>
-            <Button
-              variant='outline'
-              onClick={() => handleSelectMove(1, "Rock")}
-            >
-              Select
-            </Button>
-          </div>
+    <div className='flex flex-row w-[100vw] justify-evenly items-center text-white'>
+      <div
+        className={cn(
+          "flex flex-col items-center justify-center gap-[10px] border-[2px] rounded-lg p-[20px] hover:cursor-pointer",
+          moveNumber === 1 ? "border-[#9012FE]" : "border-transparent"
+        )}
+        onClick={() => handleSelectMove(1, "Rock")}
+      >
+        <FontAwesomeIcon icon={faHandRock} size='4x' color='#fff' />
+        <div>
+          <p className='text-sm font-medium leading-none'>Rock</p>
         </div>
+      </div>
 
-        <div className='flex items-center gap-4'>
-          <FontAwesomeIcon icon={faHandPaper} size='2xl' color='' />
-          <div>
-            <p className='text-sm font-medium leading-none'>Paper</p>
-          </div>
-          <div className='ml-auto font-medium'>
-            <Button
-              variant='outline'
-              onClick={() => handleSelectMove(2, "Paper")}
-            >
-              Select
-            </Button>
-          </div>
+      <div
+        className={cn(
+          "flex flex-col items-center justify-center gap-[10px] border-[2px] rounded-lg p-[20px] hover:cursor-pointer",
+          moveNumber === 2 ? "border-[#9012FE]" : "border-transparent"
+        )}
+        onClick={() => handleSelectMove(2, "Paper")}
+      >
+        <FontAwesomeIcon icon={faHandPaper} size='4x' color='#fff' />
+        <div>
+          <p className='text-sm font-medium leading-none'>Paper</p>
         </div>
+      </div>
 
-        <div className='flex items-center gap-4'>
-          <FontAwesomeIcon icon={faHandScissors} size='2xl' color='' />
-          <div>
-            <p className='text-sm font-medium leading-none'>Scissors</p>
-          </div>
-          <div className='ml-auto font-medium'>
-            <Button
-              variant='outline'
-              onClick={() => handleSelectMove(3, "Scissors")}
-            >
-              Select
-            </Button>
-          </div>
+      <div
+        className={cn(
+          "flex flex-col items-center justify-center gap-[10px] border-[2px] rounded-lg p-[20px] hover:cursor-pointer",
+          moveNumber === 3 ? "border-[#9012FE]" : "border-transparent"
+        )}
+        onClick={() => handleSelectMove(3, "Scissors")}
+      >
+        <FontAwesomeIcon icon={faHandScissors} size='4x' color='#fff' />
+        <div>
+          <p className='text-sm font-medium leading-none'>Scissors</p>
         </div>
+      </div>
 
-        <div className='flex items-center gap-4'>
-          <FontAwesomeIcon icon={faHandLizard} size='2xl' color='' />
-          <div>
-            <p className='text-sm font-medium leading-none'>Lizard</p>
-          </div>
-          <div className='ml-auto font-medium'>
-            <Button
-              variant='outline'
-              onClick={() => handleSelectMove(4, "Lizard")}
-            >
-              Select
-            </Button>
-          </div>
+      <div
+        className={cn(
+          "flex flex-col items-center justify-center gap-[10px] border-[2px] rounded-lg p-[20px] hover:cursor-pointer",
+          moveNumber === 4 ? "border-[#9012FE]" : "border-transparent"
+        )}
+        onClick={() => handleSelectMove(4, "Spock")}
+      >
+        <FontAwesomeIcon icon={faHandSpock} size='4x' color='#fff' />
+        <div>
+          <p className='text-sm font-medium leading-none'>Spock</p>
         </div>
+      </div>
 
-        <div className='flex items-center gap-4'>
-          <FontAwesomeIcon icon={faHandSpock} size='2xl' color='' />
-          <div>
-            <p className='text-sm font-medium leading-none -ml-[4px]'>Spock</p>
-          </div>
-          <div className='ml-auto font-medium'>
-            <Button
-              variant='outline'
-              onClick={() => handleSelectMove(5, "Spock")}
-            >
-              Select
-            </Button>
-          </div>
+      <div
+        className={cn(
+          "flex flex-col items-center justify-center gap-[10px] border-[2px] rounded-lg p-[20px] hover:cursor-pointer",
+          moveNumber === 5 ? "border-[#9012FE]" : "border-transparent"
+        )}
+        onClick={() => handleSelectMove(5, "Lizard")}
+      >
+        <FontAwesomeIcon icon={faHandLizard} size='4x' color='#fff' />
+        <div>
+          <p className='text-sm font-medium leading-none'>Lizard</p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

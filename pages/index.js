@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { ethers } from "ethers";
 import React, { useContext } from "react";
 
 import { LampDemo } from "@/components/ui/lamp";
@@ -10,19 +9,6 @@ import { RpsContext } from "@/context/RpsContext";
 export default function Home() {
   const { hash, hashLoad } = useContext(RpsContext);
   const router = useRouter();
-
-  const handleClick = async () => {
-    try {
-      const res = await fetch("https://kleros-rps.lucidjoy.xyz/api/salt-hash");
-      const data = await res.json();
-      const hex = convertToHex(data.slice(5));
-      const salt = bytesToUint256(hex);
-
-      hash(2, salt);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   return (
     <div>
@@ -45,10 +31,6 @@ export default function Home() {
             btnName='Enter game'
             onClick={() => router.push("/game")}
           />
-
-          <button className='text-white' onClick={handleClick}>
-            salt
-          </button>
         </motion.div>
       </div>
     </div>

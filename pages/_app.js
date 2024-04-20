@@ -8,7 +8,7 @@ import "@/styles/globals.css";
 
 const config = createConfig(
   getDefaultConfig({
-    chains: [polygonMumbai, sepolia],
+    chains: [sepolia],
 
     // Required API Keys
     alchemyId: "0YB05pw82Hcy9XURB229iSxTdo4CdN23", // or infuraId
