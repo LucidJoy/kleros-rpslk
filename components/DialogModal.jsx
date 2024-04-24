@@ -44,6 +44,7 @@ export function DialogModal({ result }) {
     localStorage.removeItem("saltValue");
     localStorage.removeItem("player2Move");
     localStorage.removeItem("stakeP1");
+    localStorage.removeItem("player1Addr");
 
     router.push("/");
   };
@@ -66,7 +67,7 @@ export function DialogModal({ result }) {
           </div>
           <DialogFooter className='flex mt-[20px]'>
             {solveLoad ? (
-              <Button disabled>
+              <Button disabled variant='load'>
                 <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                 Transferring...
               </Button>

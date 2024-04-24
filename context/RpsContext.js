@@ -119,6 +119,8 @@ export const RpsProvider = ({ children }) => {
         await tx.wait();
         setPlayLoad(false);
         toast.success("Play success.");
+
+        return true;
       }
     } catch (error) {
       // const parsedEthersError = getParsedEthersError(error);
@@ -127,6 +129,7 @@ export const RpsProvider = ({ children }) => {
       // );
       console.log(error);
       setPlayLoad(false);
+      return false;
     }
   };
 
@@ -247,6 +250,8 @@ export const RpsProvider = ({ children }) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
 
+      console.log("Signer: ", signer._address);
+
       const rpsContract = new ethers.ContractFactory(
         RpsABI,
         RpsBytecode.bytecode,
@@ -268,9 +273,10 @@ export const RpsProvider = ({ children }) => {
       toast.success("Game launched successfully.");
       setHashLoad(false);
 
-      return deployedContract;
+      return true;
     } catch (error) {
       console.log(error);
+      return false;
     }
   };
 

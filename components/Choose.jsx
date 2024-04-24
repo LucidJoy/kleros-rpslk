@@ -7,28 +7,36 @@ import {
   faHandLizard,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useAccount } from "wagmi";
 
 import { RpsContext } from "@/context/RpsContext";
 import { cn } from "@/utils/cn";
 import { toast } from "sonner";
 
 export default function Choose({ player }) {
-  const { moveNumber, setMoveNumber, setPlayer1Move, setPlayer2Move } =
-    useContext(RpsContext);
+  const {
+    moveNumber,
+    setMoveNumber,
+    setPlayer1Move,
+    setPlayer2Move,
+    opponentAddr,
+  } = useContext(RpsContext);
+  const { address } = useAccount();
 
   const handleSelectMove = (num, move) => {
     try {
-      if (player == "player2") {
+      if (player == "player2" && address == opponentAddr) {
         localStorage.setItem("player2Move", num);
         setMoveNumber(num);
         setPlayer2Move(num);
+        toast.success(`Player 2: ${move} selected.`);
       } else if (player === "player1") {
         setMoveNumber(num);
         setPlayer1Move(num);
+        toast.success(`Player 1: ${move} selected.`);
+      } else {
+        toast.error("Please change player address.");
       }
-      toast.success(
-        `${player === "player1" ? "Player 1" : "Player 2"}: ${move} selected.`
-      );
     } catch (error) {
       toast.error("Something went wrong.");
     }

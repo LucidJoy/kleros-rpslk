@@ -21,6 +21,7 @@ const Player2 = () => {
     play,
     moveNumber,
     playLoad,
+    setPlayLoad,
     checkTimerParams,
     setCheckTimerParams,
     j2Timeout,
@@ -57,9 +58,14 @@ const Player2 = () => {
       const stakeAmt = localStorage.getItem("stakeP1");
 
       setCheckTimerParams(false);
-      await play(p2move, stakeAmt);
-      setCheckJ1Timeout(true);
-      router.push("/winner");
+      const isPlayed = await play(p2move, stakeAmt);
+
+      if (isPlayed) {
+        setCheckJ1Timeout(true);
+        router.push("/winner");
+      } else {
+        setPlayLoad(false);
+      }
     } catch (error) {
       toast.error("Something went wrong");
     }
@@ -110,7 +116,7 @@ const Player2 = () => {
 
         <div className='absolute top-[600px] w-full flex justify-center'>
           {playLoad ? (
-            <Button disabled>
+            <Button disabled variant='load'>
               <Loader2 className='mr-2 h-4 w-4 animate-spin' />
               Please wait
             </Button>

@@ -1,14 +1,43 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { LampDemo } from "@/components/ui/lamp";
 import { AnimatedButton } from "@/components/AnimatedButton";
 import { RpsContext } from "@/context/RpsContext";
 
 export default function Home() {
-  const { hash, hashLoad } = useContext(RpsContext);
+  const {
+    tieModal,
+    setTieModal,
+    solveLoad,
+    winnerP1Modal,
+    winnerP2Modal,
+    setWinnerP1Modal,
+    setWinnerP2Modal,
+    setPlayer1Move,
+    setPlayer2Move,
+    setStakeP1,
+    setMoveNumber,
+  } = useContext(RpsContext);
   const router = useRouter();
+
+  useEffect(() => {
+    setTieModal(false);
+    setWinnerP1Modal(false);
+    setWinnerP2Modal(false);
+    setPlayer1Move(0);
+    setPlayer2Move(0);
+    setStakeP1(0);
+    setMoveNumber(0);
+
+    localStorage.removeItem("rpsContractAddr");
+    localStorage.removeItem("c1Hash");
+    localStorage.removeItem("saltValue");
+    localStorage.removeItem("player2Move");
+    localStorage.removeItem("stakeP1");
+    localStorage.removeItem("player1Addr");
+  }, []);
 
   return (
     <div>

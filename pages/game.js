@@ -19,6 +19,7 @@ const Game = () => {
     hash,
     moveNumber,
     hashLoad,
+    setHashLoad,
     deployRPSContract,
     opponentAddr,
     stakeP1,
@@ -70,14 +71,20 @@ const Game = () => {
       localStorage.setItem("c1Hash", c1Hash);
 
       // Deploy the RPS contract
-      await deployRPSContract(c1Hash, opponentAddr, stakeP1);
+      const isDeployed = await deployRPSContract(c1Hash, opponentAddr, stakeP1);
 
-      setMoveNumber(0);
+      if (isDeployed) {
+        setMoveNumber(0);
+        localStorage.setItem("player1Addr", address);
 
-      // start timer
-      setCheckTimerParams(true);
+        // start timer
+        setCheckTimerParams(true);
 
-      router.push("/player2");
+        router.push("/player2");
+      } else {
+        toast.error("Something went wrong.");
+        setHashLoad(false);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -85,10 +92,6 @@ const Game = () => {
 
   return (
     <div className='w-[100vw] h-[100vh] bg-black'>
-      {/* <div className='absolute w-full h-full'>
-        <SparklesPreview />
-      </div> */}
-
       <div className='absolute border-b border-b-[#FFFFFF40] w-full px-[15px] py-[15px] flex items-center justify-between'>
         <div onClick={() => router.push("/")} className='hover:cursor-pointer'>
           <Image src={logo} height={40} alt='logo' />
@@ -104,7 +107,7 @@ const Game = () => {
 
             <div className='absolute top-[600px] w-full flex justify-center'>
               {hashLoad ? (
-                <Button disabled>
+                <Button disabled variant='load'>
                   <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                   Please wait
                 </Button>

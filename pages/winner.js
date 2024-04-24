@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 import { useTimer } from "use-timer";
+import { useAccount } from "wagmi";
 
 import logo from "../assets/logo.svg";
 import { TextRevealCard } from "@/components/ui/text-reveal-effect";
@@ -46,6 +47,7 @@ const Winner = () => {
       }
     },
   });
+  const { address } = useAccount();
 
   const router = useRouter();
 
@@ -63,6 +65,13 @@ const Winner = () => {
       return toast.error("Insuffient data provided.");
 
     setCheckJ1Timeout(false);
+    const player1Addr = localStorage.getItem("player1Addr");
+    if (address != player1Addr) {
+      console.log(address);
+      console.log(player1Addr.toString());
+      return toast.error("Only Player 1 can call.");
+    }
+
     const p2Move = localStorage.getItem("player2Move");
     // console.log(+moveNumberP1, +p2Move);
 
@@ -73,10 +82,10 @@ const Winner = () => {
 
     const boolWin = await win(moveNumberP1, p2Move);
 
-    const isCorrect = await solve(moveNumberP1, saltP1);
-    if (isCorrect === false) return;
+    const isSolved = await solve(moveNumberP1, saltP1);
+    if (isSolved === false) return toast.error("Something went wrong.");
 
-    if (isCorrect === true) {
+    if (isSolved === true) {
       if (+moveNumberP1 == +p2Move) {
         console.log("Game is tie");
         setTieModal(true);
@@ -177,7 +186,7 @@ const Winner = () => {
 
         <div className='absolute top-[600px] w-full flex justify-center'>
           {solveLoad ? (
-            <Button disabled>
+            <Button disabled variant='load'>
               <Loader2 className='mr-2 h-4 w-4 animate-spin' />
               Please wait
             </Button>
