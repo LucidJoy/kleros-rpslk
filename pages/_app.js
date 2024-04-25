@@ -2,6 +2,7 @@ import { WagmiConfig, createConfig } from "wagmi";
 import { polygonMumbai, sepolia } from "wagmi/chains";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { Toaster } from "@/components/ui/sonner";
+import Head from "next/head";
 
 import { RpsProvider } from "@/context/RpsContext";
 import "@/styles/globals.css";
@@ -29,6 +30,9 @@ export default function App({ Component, pageProps }) {
     <WagmiConfig config={config}>
       <RpsProvider>
         <ConnectKitProvider>
+          <Head>
+            <title>Kleros - RPS</title>
+          </Head>
           <Toaster />
           <Component {...pageProps} />
         </ConnectKitProvider>
