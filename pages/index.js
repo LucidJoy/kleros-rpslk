@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
+import { useAccount } from "wagmi";
 
 import { LampDemo } from "@/components/ui/lamp";
 import { AnimatedButton } from "@/components/AnimatedButton";
 import { RpsContext } from "@/context/RpsContext";
+import { toast } from "sonner";
+import { ConnectKitButton } from "connectkit";
 
 export default function Home() {
   const {
@@ -21,6 +24,7 @@ export default function Home() {
     setMoveNumber,
   } = useContext(RpsContext);
   const router = useRouter();
+  const { address } = useAccount();
 
   useEffect(() => {
     setTieModal(false);
@@ -39,6 +43,14 @@ export default function Home() {
     localStorage.removeItem("player1Addr");
   }, []);
 
+  const handleEnter = () => {
+    if (address === undefined) {
+      return toast.error("Please connect wallet.");
+    } else {
+      router.push("/game");
+    }
+  };
+
   return (
     <div>
       <div className='relative w-full h-full'>
@@ -56,10 +68,11 @@ export default function Home() {
           }}
           className='absolute top-[600px] w-full flex justify-center'
         >
-          <AnimatedButton
-            btnName='Enter game'
-            onClick={() => router.push("/game")}
-          />
+          {address === undefined ? (
+            <ConnectKitButton />
+          ) : (
+            <AnimatedButton btnName='Enter game' onClick={handleEnter} />
+          )}
         </motion.div>
       </div>
     </div>

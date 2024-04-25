@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { toast } from "sonner";
 import { getParsedEthersError } from "@enzoferey/ethers-error-parser";
@@ -33,6 +33,25 @@ export const RpsProvider = ({ children }) => {
 
   const hasherContractAddr = "0xb0846aBCB645EB49C51C697806c23181B4A093f9";
   const hashOnlyContractAddr = "0xDe96818C7C16d967E679321ad683D81D7e5dAB4b";
+
+  // Check if it is connected to wallet
+  const checkIfWalletIsConnect = async () => {
+    // While installing metamask, it has an ethereum object in the window
+    if (!window.ethereum) return alert("Please install MetaMask.");
+
+    // Fetch all the eth accounts
+    const accounts = await window.ethereum.request({ method: "eth_accounts" });
+
+    // Connecting account if exists
+    if (!accounts.length) {
+      console.log("No accounts found");
+    }
+  };
+
+  // Checking if wallet is there in the start
+  useEffect(() => {
+    checkIfWalletIsConnect();
+  }, []);
 
   const hash = async (c, salt) => {
     try {
