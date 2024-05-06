@@ -75,7 +75,7 @@ const Player2 = () => {
     <div className='w-[100vw] h-[100vh] bg-black'>
       <div className='absolute border-b border-b-[#FFFFFF40] w-full px-[15px] py-[15px] flex items-center justify-between'>
         <div onClick={() => router.push("/")} className='hover:cursor-pointer'>
-          <Image src={logo} height={40} alt='logo' />
+          <Image src={logo} height={30} alt='logo' />
         </div>
 
         <ConnectKitButton />

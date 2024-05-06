@@ -31,9 +31,11 @@ export default function App({ Component, pageProps }) {
       <RpsProvider>
         <ConnectKitProvider>
           <Head>
-            <title>Kleros - RPS</title>
+            <title>RPSLK</title>
           </Head>
+
           <Toaster />
+
           <Component {...pageProps} />
         </ConnectKitProvider>
       </RpsProvider>
